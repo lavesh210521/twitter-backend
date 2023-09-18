@@ -1,30 +1,35 @@
 import { User } from "../models/Index.js";
 import bcrypt from "bcrypt";
-// const jwt = require("jsonwebtoken");
 import  jwt  from "jsonwebtoken";
 import { isUndefine } from "../helpers.js";
+import { Op } from "sequelize";
 import cookieParser from "cookie-parser";
-const SECRET = "MEDIA.NETTOKENS";
+
 
 export const signup = async(req,res) => {
     try {
         
         const { first_name,last_name,username,email,password,confirm_password} = req.body;
         const data = [first_name,last_name,email,username,password,confirm_password];
-        console.log(data);
-        console.log(isUndefine(data));
         if(isUndefine(data))
             return res.status(400).json({message: "Missing parameters!"});
         if(password != confirm_password)
         return res.status(400).json({message: "Password and confirm password doesn't match!"});
         const existingUser = await User.findOne({
             where: {
-                email: email
-            }
+                [Op.or]: [
+                  { email: email },
+                  { username: username }
+                ]
+              }
         });
-        console.log(existingUser);
         if(existingUser){
-            return res.status(400).json({message: "This email id is already in use!!"});
+            if(existingUser.email == email){
+                return res.status(400).json({message: "This email id is already in use!!"});
+            }
+            if(existingUser.username == username){
+                return res.status(400).json({message: "This username is already in use!!"});
+            }
         }
        const hashedPassword = await bcrypt.hash(password,10);
         const newUser = await User.create({
@@ -34,7 +39,7 @@ export const signup = async(req,res) => {
             email: email,
             password: hashedPassword
         });
-        const jwtToken = jwt.sign({email: email,id: newUser.id},SECRET);
+        const jwtToken = jwt.sign({email: email,id: newUser.id},process.env.SECRET);
         
         return res.status(201).json({id:newUser.id,token:jwtToken});   
     } catch (error) {
@@ -62,7 +67,7 @@ export const signin = async(req,res) => {
             return res.status(401).json({message: "Invalid Credentials!"});
         }
         else{
-            const jwtToken = jwt.sign({email: email,id: user.id},SECRET);
+            const jwtToken = jwt.sign({email: email,id: user.id},process.env.SECRET);
             let expiryDate = new Date();
             expiryDate.setDate(expiryDate + 7);
             res.cookie(`auth`,jwtToken,{
