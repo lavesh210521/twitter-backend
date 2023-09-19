@@ -8,10 +8,10 @@ Follow.init({
         autoIncrement: true,
         primaryKey: true
     },
-    following_user_id:{
+    from_user_id:{
         type:DataTypes.INTEGER
     },
-    follower_user_id:{
+    to_user_id:{
         type:DataTypes.INTEGER
     },
 },{

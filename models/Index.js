@@ -7,10 +7,12 @@ User.hasMany(Tweet,{
     foreignKey: "user_id"
 });
 User.hasMany(Follow,{
-    foreignKey: "following_user_id"
+    foreignKey: "to_user_id",
+    as: "Follower"
 });
 User.hasMany(Follow,{
-    foreignKey: "follower_user_id"
+    foreignKey: "from_user_id",
+    as: "Following"
 });
 Tweet.belongsTo(User,{
     foreignKey: "user_id",
