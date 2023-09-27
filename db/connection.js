@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
-const sequelize = new Sequelize('twitter', 'lavesh', 'lavesh', {
+import dotenv from "dotenv"
+dotenv.config();
+const sequelize = new Sequelize('twitter', process.env.DB_USERNAME, process.env.DB_PASSWORD, {
     host: 'localhost',
     dialect: 'mysql'
 });
