@@ -29,15 +29,28 @@ Like.belongsTo(Tweet,{
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
 });
-Follow.belongsTo(User,{
-    foreignKey: "following_user_id",
+Tweet.hasMany(Like,{
+    foreignKey: "tweet_id",
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
 });
-Follow.belongsTo(User,{
-    foreignKey: "follower_user_id",
+Tweet.hasMany(Tweet,{
+    foreignKey: "comment_id",
     onDelete: "CASCADE",
-    onUpdate: "CASCADE"
+    onUpdate: "CASCADE",
+    as: "Comment"
+});
+Follow.belongsTo(User,{
+    foreignKey: "to_user_id",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    as: "Follower"
+});
+Follow.belongsTo(User,{
+    foreignKey: "from_user_id",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    as: "Following"
 });
 
 export {User,Tweet,Like,Follow}
