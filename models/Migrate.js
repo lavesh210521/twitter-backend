@@ -1,15 +1,15 @@
 import { User,Tweet,Follow,Like } from "./Index.js";
 
-await User.sync({alter:true});
+await User.sync({force:true});
 console.log("-----------------------------------------")
 console.log("Migrated User");
 console.log("-----------------------------------------")
-await Tweet.sync({alter:true});
+await Tweet.sync({force:true});
 console.log("-----------------------------------------")
 console.log("Migrated Tweet");
 console.log("-----------------------------------------")
-await Like.sync({alter:true});
+await Like.sync({force:true});
 console.log("-----------------------------------------")
 console.log("Migrated Like");
 console.log("-----------------------------------------")
-await Follow.sync({alter:true});
+await Follow.sync({force:true});
