@@ -16,7 +16,13 @@ Follow.init({
     },
 },{
     sequelize,
-    modelName: 'Follow'
+    modelName: 'Follow',
+    indexes: [
+        {   unique:true,
+            fields: ['from_user_id','to_user_id']
+        }
+    ]
+
 });
 
 
