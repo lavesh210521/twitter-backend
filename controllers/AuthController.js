@@ -10,27 +10,27 @@ export const signup = async(req,res) => {
     try {
         
         const { first_name,last_name,username,email,password,confirm_password} = req.body;
-        const data = [first_name,last_name,email,username,password,confirm_password];
-        if(isUndefine(data))
-            return res.status(400).json({message: "Missing parameters!"});
-        if(password != confirm_password)
-        return res.status(400).json({message: "Password and confirm password doesn't match!"});
-        const existingUser = await User.findOne({
-            where: {
-                [Op.or]: [
-                  { email: email },
-                  { username: username }
-                ]
-              }
-        });
-        if(existingUser){
-            if(existingUser.email == email){
-                return res.status(400).json({message: "This email id is already in use!!"});
-            }
-            if(existingUser.username == username){
-                return res.status(400).json({message: "This username is already in use!!"});
-            }
-        }
+        // const data = [first_name,last_name,email,username,password,confirm_password];
+        // if(isUndefine(data))
+        //     return res.status(400).json({message: "Missing parameters!"});
+        // if(password != confirm_password)
+        // return res.status(400).json({message: "Password and confirm password doesn't match!"});
+        // const existingUser = await User.findOne({
+        //     where: {
+        //         [Op.or]: [
+        //           { email: email },
+        //           { username: username }
+        //         ]
+        //       }
+        // });
+        // if(existingUser){
+        //     if(existingUser.email == email){
+        //         return res.status(400).json({message: "This email id is already in use!!"});
+        //     }
+        //     if(existingUser.username == username){
+        //         return res.status(400).json({message: "This username is already in use!!"});
+        //     }
+        // }
        const hashedPassword = await bcrypt.hash(password,10);
         const newUser = await User.create({
             first_name: first_name,
@@ -51,22 +51,22 @@ export const signup = async(req,res) => {
 export const signin = async(req,res) => {
     try {
         const {email,password} = req.body;  
-        if(email == undefined || password == undefined){
-            return res.status(400).json({message: "Missing parameters!"});
-        }
+        // if(email == undefined || password == undefined){
+        //     return res.status(400).json({message: "Missing parameters!"});
+        // }
         const user = await User.findOne({
             where: {
                 email: email
             }
         });
-        if(!user){
-            return res.status(404).json({message: "User not found!"});
-        }
-        const isPasswordSame = await bcrypt.compare(password,user.password);
-        if(!isPasswordSame){
-            return res.status(401).json({message: "Invalid Credentials!"});
-        }
-        else{
+        // if(!user){
+        //     return res.status(404).json({message: "User not found!"});
+        // }
+        // const isPasswordSame = await bcrypt.compare(password,user.password);
+        // if(!isPasswordSame){
+        //     return res.status(401).json({message: "Invalid Credentials!"});
+        // }
+        // else{
             const jwtToken = jwt.sign({email: email,id: user.id},process.env.SECRET);
             let expiryDate = new Date();
             expiryDate.setDate(expiryDate + 7);
@@ -77,7 +77,7 @@ export const signin = async(req,res) => {
                 sameSite: 'lax'
             });
             return res.status(201).json({id: user.id, token: jwtToken});
-        }
+        // }
     } 
     catch (error) {
         console.log(error);
