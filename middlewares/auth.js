@@ -4,6 +4,7 @@ const SECRET = "MEDIA.NETTOKENS";
 export const auth = (req,res,next) => {
     try {
         let token = req.cookies["auth"];
+        console.log(token);
         if(!token){
             token = req.headers.authorization;
             token = token.split(" ")[1];
@@ -11,6 +12,8 @@ export const auth = (req,res,next) => {
         if(token){
             let user = jwt.verify(token,SECRET);
             req.userId = user.id;
+            console.log("Auth Successful");
+            console.log(req.userId);
         }
         else{
             res.status(401).json({
