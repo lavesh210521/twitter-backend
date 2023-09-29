@@ -7,6 +7,7 @@ import { auth } from "./middlewares/auth.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv"
 import { findOne, index } from "./controllers/TweetsController.js";
+import cors from "cors"
 
 
 import { userRouter } from "./routes/userRoutes.js";
@@ -14,9 +15,12 @@ import { authRouter } from "./routes/authRoutes.js";
 import { tweetRouter } from "./routes/tweetRoutes.js";
 import { body } from "express-validator";
 import { userTweetRouter } from "./routes/userTweetRoutes.js";
+
 dotenv.config();
 
+
 //Before Middlewares
+app.use(cors({origin: "http://localhost:4200"}));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
