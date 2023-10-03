@@ -40,6 +40,14 @@ export const signup = async(req,res) => {
             password: hashedPassword
         });
         const jwtToken = jwt.sign({email: email,id: newUser.id},process.env.SECRET);
+        let expiryDate = new Date();
+            expiryDate.setDate(expiryDate + 7);
+            res.cookie(`auth`,jwtToken,{
+                expire: expiryDate,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'None'
+            });
         
         return res.status(201).json({id:newUser.id,token:jwtToken});   
     } catch (error) {
@@ -74,7 +82,7 @@ export const signin = async(req,res) => {
                 expire: expiryDate,
                 secure: true,
                 httpOnly: true,
-                sameSite: 'lax'
+                sameSite: 'None'
             });
             return res.status(201).json({id: user.id, token: jwtToken});
         // }
