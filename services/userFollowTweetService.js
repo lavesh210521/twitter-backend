@@ -1,9 +1,11 @@
+import { Follow, Tweet, User } from "../models/Index.js";
+
 export const getAllTweetsFromFollowings = async(req,res) => {
     try {
         const follow = await Follow.findByPk(1, {
             include: "Following"
         });    
-        const temp = await User.findByPk(1, {
+        const user = await User.findOne({
             include: [
                 {
                     model: Follow,
@@ -13,18 +15,27 @@ export const getAllTweetsFromFollowings = async(req,res) => {
                             model: User,
                             as: "Follower",
                             include: [{
-                                model: Tweet
+                                model: Tweet,
+                                attributes:["tweet","image_url","createdAt","comment_id"]
                             }
                             ]
                         },
                     ],
                 },
             ],
-        })
-        console.log(temp);
-        res.status(200).json({ message: temp })
+            where: {
+                id: req.userId
+            }
+        });
+        const tweets = user.Following.map((value) => {
+             return (value.Follower.Tweets.map((tweet) => {
+                return tweet;
+            }));
+        });
+        // const tweets =
+        res.status(200).json({ tweets: tweets });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "There is some error while getting Following user!" });
+        res.status(500).json({ error: "There is some error while getting Following user!" });
     }
 }
