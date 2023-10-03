@@ -7,6 +7,7 @@ import { tweetLikeValidationRules, tweetUnlikeValidationRules } from "../middlew
 import { tweetLike, tweetUnlike } from "../services/tweetLikeService.js";
 import { tweetCommentCreateValidationRules, tweetCommentValidationRules } from "../middlewares/validatior/tweetCommentValidator.js";
 import { createComment, getComments } from "../services/tweetCommentService.js";
+import { getAllTweetsFromFollowings } from "../services/userFollowTweetService.js";
 const tweetRouter = express.Router();
 
 tweetRouter.get("/",auth,getAllTweets);
@@ -16,5 +17,5 @@ tweetRouter.post("/:tweetId/like",auth,validate(tweetLikeValidationRules),tweetL
 tweetRouter.post("/:tweetId/unlike",auth,validate(tweetUnlikeValidationRules),tweetUnlike);
 tweetRouter.post("/comment",auth,validate(tweetCommentCreateValidationRules),createComment);
 tweetRouter.delete("/:tweetId",auth,validate(tweetDeleteValidationRules),deleteTweet);
-
+tweetRouter.get("/followings",auth,getAllTweetsFromFollowings);
 export { tweetRouter}
