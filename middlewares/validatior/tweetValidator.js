@@ -4,7 +4,8 @@ import { Tweet } from "../../models/Index.js";
 export const tweetCreateValidationRules = [
 	body("tweet")
 		.exists()
-        .withMessage("please provide a tweet message"),
+        .notEmpty()
+        .withMessage("tweet is required!"),
 	body("imageUrl")
     	.optional()
         .isURL()

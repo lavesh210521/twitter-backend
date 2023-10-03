@@ -13,12 +13,15 @@ export const tweetCommentValidationRules = [
 export const tweetCommentCreateValidationRules = [
     body("tweet")
         .exists()
-        .withMessage("please provide a tweet message"),
+        .notEmpty()
+        .withMessage("tweet is required!"),
     body("imageUrl")
         .optional()
         .isURL(),
     body("commentId")
         .exists()
+        .notEmpty()
+        .withMessage("comment Id is required!")
         .custom((value, { req }) => {
             const tweet = Tweet.findOne({
                 where: {

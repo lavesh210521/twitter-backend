@@ -6,9 +6,13 @@ export const validateInputs = () => {
 	return [
 		body('first_name')
 			.exists()
+			.notEmpty()
+			.withMessage("first_name is required!")
 			.escape(),
 		body('last_name')
 			.exists()
+			.notEmpty()
+			.withMessage("last_name is required!")
 			.escape(),
 		body('email')
 			.isEmail()
@@ -18,26 +22,29 @@ export const validateInputs = () => {
 };
 export const userProfileViewValidationRules = [
 	param('userId')
-	.custom((value) => {
-		console.log(value);
-		return true;
-	})
-
+	.exists()
+	.notEmpty()
+	.withMessage("UserId is required!")
 ];
 export const userUpdateValidationRules = [
 	body("first_name")
-		.exists(),
+		.exists()
+		.notEmpty()
+		.withMessage("first_name is required!"),
 	body("last_name")
-		.exists(),
+		.exists()
+		.notEmpty()
+		.withMessage("last_name is required!"),
 	body("username")
 		.exists()
+		.notEmpty()
+		.withMessage("username is required!")
 		.custom(async (value, { req }) => {
 			const user = await User.findOne({
 				where: {
 					username: req.body.username
 				}
 			});
-			console.log()
 			console.log("printing user " + user);
 			if (user && user.id != req.userId && user.username == value) {
 				throw new Error()
@@ -47,6 +54,8 @@ export const userUpdateValidationRules = [
 		.withMessage("username already exists!"),
 	body('email')
 		.exists()
+		.notEmpty()
+		.withMessage("email is required!")
 		.isEmail()
 		.withMessage("Email is not in proper format!")
 		.custom(async (value, { req }) => {
