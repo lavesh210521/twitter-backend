@@ -26,6 +26,12 @@ export const userProfileViewValidationRules = [
 	.notEmpty()
 	.withMessage("UserId is required!")
 ];
+export const userSearchValidationRules = [
+    param("searchKeyword")
+    .exists()
+    .notEmpty()
+    .withMessage("required few characters to search!")
+]
 export const userUpdateValidationRules = [
 	body("first_name")
 		.exists()
