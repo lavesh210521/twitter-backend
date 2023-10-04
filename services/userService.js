@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Follow, User } from "../models/Index.js";
 
 export const getAnyUserProfile = async (req,res) => {
@@ -13,7 +14,21 @@ export const getAnyUserProfile = async (req,res) => {
         res.status(500).json({error: "There is some error while getting user!"});
     }
 }
-
+export const getUsersBySearch = async(req,res) => {
+    try {
+        const users = await User.findAll({
+            where:{
+                username: {
+                    [Op.like]: '%'+req.params.searchKeyword+'%'
+                }
+            }
+        });
+        res.status(200).json({users: users});
+    } catch (error) {
+        res.status(500).json({error: "There is some error while fetching users"});
+        console.log(error);
+    }
+}
 // export const getUserFollowers = async(req,res) => {
 //     try {
 //         let userId = req.params.userId;
