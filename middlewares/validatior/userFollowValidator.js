@@ -21,6 +21,28 @@ export const userFollowValidationRules = [
         }),
 ]
 
+
+export const userRemoveFollowerValidationRules = [
+    body("userId")
+    .exists()
+    .notEmpty()
+    .withMessage("user Id is required!")
+    .isNumeric()
+    .withMessage("User Id should be a number")
+    .escape()
+    .custom(async (value, { req }) => {
+        const follow = await Follow.findOne({
+            where: {
+                from_user_id: value ,
+                to_user_id: req.userId
+            }
+        });
+        if (!follow) {
+            throw new Error("user is not present in follower list");
+        }
+        return true;
+    }),
+]
 export const userUnfollowValidationRules = [
     body("userId")
         .exists()
@@ -36,7 +58,7 @@ export const userUnfollowValidationRules = [
                 }
             });
             if (!follow) {
-                throw new Error("Bad request!");
+                throw new Error("Invalid Parameters!");
             }
             return true;
         }),
