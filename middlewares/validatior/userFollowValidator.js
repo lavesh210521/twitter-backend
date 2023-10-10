@@ -4,6 +4,7 @@ import { Follow, User } from "../../models/Index.js";
 export const userFollowValidationRules = [
     body("userId")
         .exists()
+        .withMessage("User Id is required!")
         .notEmpty()
         .withMessage("User Id is required!")
         .isNumeric()
@@ -25,8 +26,9 @@ export const userFollowValidationRules = [
 export const userRemoveFollowerValidationRules = [
     body("userId")
     .exists()
-    .notEmpty()
     .withMessage("user Id is required!")
+    .notEmpty()
+    .withMessage("user Id cannot be empty")
     .isNumeric()
     .withMessage("User Id should be a number")
     .escape()

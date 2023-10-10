@@ -11,7 +11,9 @@ export const validate = validations => {
       return next();
       // next();
     }
-
-    res.status(400).json({ errors: errors.array() });
+    const errorCode = req.errorCode != undefined ? req.errorCode : 400;
+    // console.log("handling error with custom error code" + req.errorCode);
+    console.log(errors);
+    res.status(errorCode).json({ error: errors.array()[0].msg });
   };
 };

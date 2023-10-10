@@ -7,16 +7,19 @@ import bcrypt from "bcrypt";
 export const signupValidationRules = [
     body("first_name")
         .exists()
+        .withMessage("first_name is required")
         .notEmpty()
-        .withMessage("first_name is required!"),
+        .withMessage("first_name cannot be empty"),
     body("last_name")
         .exists()
+        .withMessage("last_name is required")
         .notEmpty()
-        .withMessage("last_name is required!"),
+        .withMessage("last_name cannot be empty!"),
     body("username")
         .exists()
+        .withMessage("username is required")
         .notEmpty()
-        .withMessage("username is required!")
+        .withMessage("username cannot be empty!")
         .custom(async (value, { req, res }) => {
             const user = await User.findOne({
                 where: {
@@ -30,8 +33,9 @@ export const signupValidationRules = [
         }),
     body('email')
         .exists()
+        .withMessage("email is required")
         .notEmpty()
-        .withMessage("email is required!")
+        .withMessage("email cannot be empty")
         .isEmail()
         .withMessage("Email is not in proper format!")
         .custom(async (value, { req }) => {
@@ -51,10 +55,11 @@ export const signupValidationRules = [
         .withMessage('Email already Exists!'),
     body('password')
         .exists()
-        .notEmpty()
         .withMessage("password is required!")
+        .notEmpty()
+        .withMessage("password cannot be empty!")
         .isLength({ min: 8 })
-        .withMessage('Password is too short'),
+        .withMessage('Password should be minimum 8 characters long'),
     body('confirm_password')
         .exists()
         .notEmpty()
@@ -70,12 +75,13 @@ export const signupValidationRules = [
 export const signinValidationRules = [
     body('email')
         .exists()
+        .withMessage("Email is required!")
         .isEmail()
-        .withMessage("Email is not in proper format!"),
+        .withMessage("Email cannot be empty"),
     body('password')
         .exists()
         .isLength({ min: 8 })
-        .withMessage('Password is too short')
+        .withMessage('Password should be minimum 8 characters long')
         .custom(async (value, { req }) => {
             const user = await User.findOne({
                 where: {

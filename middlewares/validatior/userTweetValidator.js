@@ -6,7 +6,9 @@ export const userTweetValidationRules = [
         .custom((value,{req}) => {
             console.log(req.params.userId);
             if(!req.params.userId){
-                throw new Error("userId required");
+                const error = new Error("userId required");
+                error.code = 404;
+                throw error;
             }
             return true;
         })

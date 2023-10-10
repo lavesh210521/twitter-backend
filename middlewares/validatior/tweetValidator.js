@@ -13,6 +13,9 @@ export const tweetCreateValidationRules = [
 
 export const tweetDeleteValidationRules = [
     param("tweetId")
+    .exists()
+    .notEmpty()
+    .withMessage("tweet Id is required!")
         .custom(async(value,{req}) => {
             if(!req.params.tweetId){
                 throw new Error("Tweet Id required!");

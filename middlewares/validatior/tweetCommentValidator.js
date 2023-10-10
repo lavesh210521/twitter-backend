@@ -3,9 +3,19 @@ import { Tweet } from "../../models/Index.js";
 
 export const tweetCommentValidationRules = [
     param("tweetId")
-        .custom((value, { req }) => {
-            if (!req.params.tweetId) {
-                throw new Error("Tweet Id required!");
+        .exists()
+        .notEmpty()
+        .withMessage("Tweet Id is required!")
+        .custom(async(value, { req }) => {
+            const tweet = await Tweet.findOne({
+                where: {
+                    id: req.params.tweetId
+                }
+            });
+            if(!tweet){
+                let error = new Error("Invalid Tweet Id");
+                error.code = 404;
+                throw error;
             }
             return true;
         })
@@ -17,7 +27,8 @@ export const tweetCommentCreateValidationRules = [
         .withMessage("tweet is required!"),
     body("imageUrl")
         .optional()
-        .isURL(),
+        .isURL()
+        .withMessage("ImageUrl should be a url"),
     body("commentId")
         .exists()
         .notEmpty()

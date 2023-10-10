@@ -31,6 +31,24 @@ export const userSearchValidationRules = [
     .exists()
     .notEmpty()
     .withMessage("required few characters to search!")
+];
+export const userExistValidationRules = [
+	param("userId")
+	.exists()
+	.notEmpty()
+	.withMessage("user id is required")
+	.custom(async (value,{req}) => {
+		const user = await User.findOne({
+			where: {
+				id: value
+			}
+		});
+		if(!user){
+			throw new Error();
+		}
+	})
+	.withMessage("User doesn't exist!")
+	
 ]
 export const userUpdateValidationRules = [
 	body("first_name")
