@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import { Follow, User } from "../models/Index.js";
 
 export const getAnyUserProfile = async (req,res) => {
+    console.log(new Date());
     try {
         const user = await User.findOne({
             where: {
@@ -21,7 +22,7 @@ export const getUsersBySearch = async(req,res) => {
                 username: {
                     [Op.like]: '%'+req.params.searchKeyword+'%'
                 }
-            }
+            },attributes:["id","first_name","last_name","email","username"]
         });
         res.status(200).json({users: users});
     } catch (error) {
@@ -68,7 +69,8 @@ export const updateUser = async(req,res) => {
         let user = await User.findOne({
             where: {
                 id: userId
-            }
+            },
+            attributes:["id","first_name","last_name","email","username"]
         });
         user.first_name = req.body.first_name;
         user.last_name = req.body.last_name;
@@ -78,17 +80,17 @@ export const updateUser = async(req,res) => {
         res.status(200).json({user: user});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({error: "Internal Server Error"});
     }
 }
 
-export const viewUser = async(req,res) => {
+export const getUser = async(req,res) => {
     console.log(req.params);
     try {
         const user = await User.findOne({
             where: {
                 id: req.userId
-            }
+            },attributes:["id","first_name","last_name","email","username"]
         });
         return res.status(200).json({
             user: user
@@ -96,6 +98,11 @@ export const viewUser = async(req,res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(404).json({message: "User not found!"});        
+        res.status(404).json({error: "User not found!"});        
     }
+}
+export const validateUser = async(req,res) => {
+    res.status(200).json({
+        status: "verified"
+    });
 }
