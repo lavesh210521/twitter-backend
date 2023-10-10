@@ -15,10 +15,12 @@ import { authRouter } from "./routes/authRoutes.js";
 import { tweetRouter } from "./routes/tweetRoutes.js";
 import { body } from "express-validator";
 import { userTweetRouter } from "./routes/userTweetRoutes.js";
+import moment from "moment-timezone";
 
 dotenv.config();
 
 
+process.env.TZ = "Asia/Calcutta";
 //Before Middlewares
 const options = {
     "origin": 'http://localhost:4200', // or use an array of allowed origins
@@ -27,18 +29,19 @@ const options = {
     "optionsSuccessStatus": 204
 }
 app.use(cors(options));
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Credentials', true);
-//     res.header('Access-Control-Allow-Origin', req.headers.origin);
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-//     next();
-//   });
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+//for timezone
+app.use((req,res,next) => {
+    // const timeZone = 'Asia/Kolkata';
+    // const currentTimeInTimeZone = moment().tz(timeZone).format();
+    // console.log(currentTimeInTimeZone);
+    // res.locals.currentTimeInTimeZone = currentTimeInTimeZone;
+    next();
+});
 
 app.use("/Protected",auth);
 app.get("/Protected", (req,res) => {
