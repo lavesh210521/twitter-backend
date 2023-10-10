@@ -13,8 +13,9 @@ export const getComments = async(req,res) => {
         res.status(200).json({Comments: tweet.Comment});
         
     } catch (error) {
+        console.log("error from get comments");
         console.log(error);
-        res.status(500).json({message: "There is some error while fetching comments!"});
+        res.status(500).json({error: "There is some error while fetching comments!"});
     }
 }
 
@@ -30,6 +31,6 @@ export const createComment = async(req,res) => {
         res.status(200).json({ tweet: tweet });
     } catch (error) {
         console.log(error);
-        res.status(404).json({ message: "There is some error while posting comment!" });
+        res.status(404).json({ error: "There is some error while posting comment!" });
     }
 }

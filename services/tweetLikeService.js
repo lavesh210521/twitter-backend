@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 
 export const tweetLike = async (req, res) => {
     try {
-        await Like.findOrCreate({
+        const like = await Like.findOrCreate({
             where: {
                 [Op.and]: [
                     { user_id: req.userId },
@@ -15,17 +15,17 @@ export const tweetLike = async (req, res) => {
                 tweet_id: req.params.tweetId
             }
         });
-        res.status(200).json({ message: "Like operation executed successfully!" });
+        res.status(200).json({ like: like });
     } catch (error) {
         console.log("tweetLikeService -> tweetLike" + error);
-        res.status(500).json({ message: "There is some issue while performing like operation!" });
+        res.status(500).json({ error: "There is some issue while performing like operation!" });
     }
 
 }
 
 export const tweetUnlike = async (req, res) => {
     try {
-        await Like.destroy({
+        const like = await Like.destroy({
             where: {
                 [Op.and]: [
                     { user_id: req.userId },
@@ -33,10 +33,10 @@ export const tweetUnlike = async (req, res) => {
                 ]
             }
         })
-        res.status(200).json({ message: "Unlike operation executed successfully!" });
+        res.status(200).json({ like: like });
     } catch (error) {
         console.log("tweetLikeService -> tweetUnlike " + error);
-        res.status(500).json({ message: "There is some issue while performing unlike operation!" });
+        res.status(500).json({ error: "There is some issue while performing unlike operation!" });
     }
 
 }
