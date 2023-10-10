@@ -93,7 +93,7 @@ export const signin = async(req,res) => {
     }
 }
 export const signout = async(req,res) => {
-    res.clearCookie("auth");    
+    res.clearCookie(`auth`,{path:'/'});    
     res.status(200).json({message: "User Signout Successfully!"});
 } 
 
