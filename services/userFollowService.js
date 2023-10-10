@@ -11,7 +11,7 @@ export const follow = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            message: "There is some error while following user"
+            error: "There is some error while following user"
         });
     }
 }
@@ -28,12 +28,12 @@ export const unfollow = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
-            message: "There is some error while unfollowing user"
+            error: "There is some error while unfollowing user"
         });
     }
 }
 
-export const getAuthUserFollowings = async (req,res) => {
+export const getAuthUserFollowings = async (req, res) => {
     try {
         const temp = await User.findOne({
             where: {
@@ -47,13 +47,13 @@ export const getAuthUserFollowings = async (req,res) => {
                         {
                             model: User,
                             as: "Follower",
-                            attributes:["id","first_name","last_name","email","username"]
+                            attributes: ["id", "first_name", "last_name", "email", "username"]
                         },
                     ],
                 },
             ],
         })
-        if(temp == undefined){
+        if (temp == undefined) {
             res.status(200).json({ users: {} })
         }
         const users = temp.Following.map((value) => {
@@ -65,11 +65,11 @@ export const getAuthUserFollowings = async (req,res) => {
         res.status(500).json({ error: "There is some error while getting Following user!" });
     }
 }
-export const getAuthUserFollowers = async (req,res) => {
+export const getAuthUserFollowers = async (req, res) => {
     try {
         const temp = await User.findOne({
             where: {
-                id:req.userId
+                id: req.userId
             },
             include: [
                 {
@@ -79,13 +79,13 @@ export const getAuthUserFollowers = async (req,res) => {
                         {
                             model: User,
                             as: "Following",
-                            attributes:["id","first_name","last_name","email","username"]
+                            attributes: ["id", "first_name", "last_name", "email", "username"]
                         },
                     ],
                 },
             ],
         });
-        if(temp == undefined){
+        if (temp == undefined) {
             res.status(200).json({ users: {} })
         }
         const users = temp.Follower.map((value) => {
@@ -112,13 +112,13 @@ export const getUserFollowings = async (req, res) => {
                         {
                             model: User,
                             as: "Follower",
-                            attributes:["id","first_name","last_name","email","username"]
+                            attributes: ["id", "first_name", "last_name", "email", "username"]
                         },
                     ],
                 },
             ],
         })
-        if(temp == undefined){
+        if (temp == undefined) {
             res.status(200).json({ users: {} })
         }
         const users = temp.Following.map((value) => {
@@ -130,7 +130,49 @@ export const getUserFollowings = async (req, res) => {
         res.status(500).json({ error: "There is some error while getting Following user!" });
     }
 }
-export const removeFollower = async (req,res) => {
+export const getUserWithFollow = async (req, res) => {
+    try {
+        let users = await User.findOne({
+            where: {
+                id: req.params.userId
+            }, attributes: ["id", "first_name", "last_name", "email", "username"],
+            include: [
+                {
+                    model: Follow,
+                    as: "Following",
+                    include: [
+                        {
+                            model: User,
+                            as: "Follower",
+                            attributes: ["id", "first_name", "last_name", "email", "username"]
+                        }
+                    ],
+                },
+                {
+                    model: Follow,
+                    as: "Follower",
+                    include: [
+                        {
+                            model: User,
+                            as: "Following",
+                            attributes: ["id", "first_name", "last_name", "email", "username"],
+                        },
+                    ],
+                },
+            ],
+        })
+        let followers = users["Follower"].map((value) => {
+            return value.Following;
+        });
+        let followings = users["Following"].map((value) => {
+            return value.Follower;
+        });
+        res.status(200).json({user:users,followers:followers,followings:followings});
+    } catch (error) {
+        res.status(500).json({error: "There is some error while fetching user and follow"})
+    }
+}
+export const removeFollower = async (req, res) => {
     try {
         const follow = await Follow.destroy({
             where: {
@@ -146,11 +188,12 @@ export const removeFollower = async (req,res) => {
         });
     }
 }
+
 export const getUserFollowers = async (req, res) => {
-    try {   
+    try {
         const temp = await User.findOne({
             where: {
-                id:req.params.userId
+                id: req.params.userId
             },
             include: [
                 {
@@ -160,21 +203,21 @@ export const getUserFollowers = async (req, res) => {
                         {
                             model: User,
                             as: "Following",
-                            attributes:["id","first_name","last_name","email","username"]
+                            attributes: ["id", "first_name", "last_name", "email", "username"]
                         },
                     ],
                 },
             ],
         });
-        if(temp == undefined){
+        if (temp == undefined) {
             res.status(200).json({ users: {} })
         }
         const users = temp.Follower.map((value) => {
             return value.Following
         });
-        res.status(200).json({ message: users })
+        res.status(200).json({ users: users })
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "There is some error while getting Follower user!" });
+        res.status(500).json({ error: "There is some error while getting Follower user!" });
     }
 }
