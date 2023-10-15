@@ -1,68 +1,54 @@
-import { body, param } from "express-validator";
+import { body,query } from "express-validator";
 import { User } from "../../models/Index.js";
 
-
-export const validateInputs = () => {
-	return [
-		body('first_name')
-			.exists()
-			.notEmpty()
-			.withMessage("first_name is required!")
-			.escape(),
-		body('last_name')
-			.exists()
-			.notEmpty()
-			.withMessage("last_name is required!")
-			.escape(),
-		body('email')
-			.isEmail()
-			.escape()
-			.withMessage('Please provide a valid email address'),
-	];
-};
 export const userProfileViewValidationRules = [
-	param('userId')
-	.exists()
-	.notEmpty()
-	.withMessage("UserId is required!")
+	query('userId')
+		.exists()
+		.withMessage("User Id is required!")
+		.notEmpty()
+		.withMessage("User Id cannot be empty!")
 ];
 export const userSearchValidationRules = [
-    param("searchKeyword")
-    .exists()
-    .notEmpty()
-    .withMessage("required few characters to search!")
+	query("searchKeyword")
+		.exists()
+		.withMessage("keywords are required")
+		.notEmpty()
+		.withMessage("required few characters to search!")
 ];
 export const userExistValidationRules = [
-	param("userId")
-	.exists()
-	.notEmpty()
-	.withMessage("user id is required")
-	.custom(async (value,{req}) => {
-		const user = await User.findOne({
-			where: {
-				id: value
+	query("userId")
+		.exists()
+		.withMessage("User Id is required!")
+		.notEmpty()
+		.withMessage("User Id cannot be empty")
+		.custom(async (value, { req }) => {
+			const user = await User.findOne({
+				where: {
+					id: value
+				}
+			});
+			if (!user) {
+				throw new Error();
 			}
-		});
-		if(!user){
-			throw new Error();
-		}
-	})
-	.withMessage("User doesn't exist!")
-	
+		})
+		.withMessage("User doesn't exist!")
 ]
 export const userUpdateValidationRules = [
 	body("first_name")
 		.exists()
+		.withMessage("first_name is required!")
 		.notEmpty()
-		.withMessage("first_name is required!"),
+		.withMessage("first_name cannot be empty"),
 	body("last_name")
 		.exists()
+		.withMessage("last_name is required!")
 		.notEmpty()
-		.withMessage("last_name is required!"),
+		.withMessage("last_name cannot be empty!"),
 	body("username")
 		.exists()
-		.notEmpty()
 		.withMessage("username is required!")
+		.notEmpty()
+		.withMessage("username cannot be empty!")
 		.custom(async (value, { req }) => {
 			const user = await User.findOne({
 				where: {
@@ -78,8 +64,9 @@ export const userUpdateValidationRules = [
 		.withMessage("username already exists!"),
 	body('email')
 		.exists()
-		.notEmpty()
 		.withMessage("email is required!")
+		.notEmpty()
+		.withMessage("email cannot be empty!")
 		.isEmail()
 		.withMessage("Email is not in proper format!")
 		.custom(async (value, { req }) => {
@@ -96,5 +83,3 @@ export const userUpdateValidationRules = [
 		})
 		.withMessage('Email already Exists!')
 ]
-
-
