@@ -1,4 +1,4 @@
-import {User,Follow,Like,Tweet} from "./Index.js";
+import { User, Follow, Like, Tweet } from "./Index.js";
 await User.destroy({
     truncate: true
 });
