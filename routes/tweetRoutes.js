@@ -1,15 +1,15 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
 import { validate } from "../exception_handling/errorHandler.js";
-import { tweetCreateValidationRules, tweetDeleteValidationRules } from "../middlewares/validatior/tweetValidator.js";
+import { tweetCreateValidationRules, tweetDeleteValidationRules } from "../middlewares/validatior/tweet/tweetValidator.js";
+import { userExistValidationRules } from "../middlewares/validatior/user/userValidator.js";
+import { paginateValidationRules } from "../middlewares/validatior/common/commonValidatior.js";
+import { tweetLikeValidationRules, tweetUnlikeValidationRules } from "../middlewares/validatior/tweet/tweetLikeValidator.js";
+import { tweetCommentCreateValidationRules, tweetCommentValidationRules } from "../middlewares/validatior/tweet/tweetCommentValidator.js";
 import { createTweet, deleteTweet, getAllTweetFromUserWithLikeAndComment, getAllTweets } from "../services/tweetService.js";
-import { tweetLikeValidationRules, tweetUnlikeValidationRules } from "../middlewares/validatior/tweetLikeValidator.js";
 import { tweetLike, tweetUnlike } from "../services/tweetLikeService.js";
-import { tweetCommentCreateValidationRules, tweetCommentValidationRules } from "../middlewares/validatior/tweetCommentValidator.js";
 import { createComment, getComments } from "../services/tweetCommentService.js";
 import { getAllTweetsFromFollowings } from "../services/userFollowTweetService.js";
-import { userExistValidationRules } from "../middlewares/validatior/userValidator.js";
-import { paginateValidationRules } from "../middlewares/validatior/commonValidatior.js";
 
 const tweetRouter = express.Router();
 

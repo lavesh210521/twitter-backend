@@ -1,7 +1,7 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
 import { validate } from "../exception_handling/errorHandler.js";
-import { userTweetValidationRules } from "../middlewares/validatior/userTweetValidator.js";
+import { userTweetValidationRules } from "../middlewares/validatior/user/userTweetValidator.js";
 import { getAllTweetsFromUser } from "../services/userTweetService.js";
 
 const userTweetRouter = express.Router();

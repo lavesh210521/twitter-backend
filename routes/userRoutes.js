@@ -1,15 +1,13 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
 import { validate } from "../exception_handling/errorHandler.js";
+import { userProfileViewValidationRules, userSearchValidationRules, userUpdateValidationRules } from "../middlewares/validatior/user/userValidator.js";
+import { userTweetValidationRules } from "../middlewares/validatior/user/userTweetValidator.js";
+import { getFollowValidationRules, userFollowValidationRules, userRemoveFollowerValidationRules, userUnfollowValidationRules } from "../middlewares/validatior/user/userFollowValidator.js";
+import { paginateValidationRules } from "../middlewares/validatior/common/commonValidatior.js";
 import { getAnyUserProfile, getUser, getUsersBySearch, updateUser, validateUser } from "../services/userService.js";
-import { userProfileViewValidationRules, userSearchValidationRules, userUpdateValidationRules } from "../middlewares/validatior/userValidator.js";
-import { userTweetValidationRules } from "../middlewares/validatior/userTweetValidator.js";
 import { getAllTweetsFromUser } from "../services/userTweetService.js";
-import { getFollowValidationRules, userFollowValidationRules, userRemoveFollowerValidationRules, userUnfollowValidationRules } from "../middlewares/validatior/userFollowValidator.js";
-import { follow, getAuthUserFollowers, getAuthUserFollowings, getUserFollowers, getUserFollowings, getUserWithFollow, removeFollower, unfollow } from "../services/userFollowService.js";
-import { paginateValidationRules } from "../middlewares/validatior/commonValidatior.js";
-import { getAllFollowingTweets } from "../services/tempService.js";
-
+import { follow, getAuthUserFollowers, getAuthUserFollowings, getUserFollowers, getUserFollowings, getUserWithFollow, removeFollower, unfollow } from "../services/user/userFollowService.js";
 const userRouter = express.Router();
 
 userRouter.get("/auth/profile", auth, getUser);
@@ -27,6 +25,4 @@ userRouter.get("/auth/followers", auth, validate(paginateValidationRules), getAu
 userRouter.get("/followings", auth, validate(getFollowValidationRules), getUserFollowings);
 userRouter.get("/followers", auth, validate(getFollowValidationRules), getUserFollowers);
 userRouter.get("/validate", auth, validateUser);
-userRouter.get("/all-following-tweets",getAllFollowingTweets);
-
 export { userRouter };    
