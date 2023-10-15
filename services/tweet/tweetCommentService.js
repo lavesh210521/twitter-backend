@@ -1,6 +1,6 @@
 import { json } from "sequelize";
-import { Tweet } from "../models/Index.js";
-import { reportError } from "../config/emailHandler.js";
+import { Tweet } from "../../models/Index.js";
+import { reportError } from "../../config/emailHandler.js";
 
 export const getComments = async(req,res) => {
     try {

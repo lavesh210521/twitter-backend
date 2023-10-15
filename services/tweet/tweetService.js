@@ -1,6 +1,6 @@
 import { Model, Op } from "sequelize";
-import { Like, Tweet, User } from "../models/Index.js";
-import { reportError } from "../config/emailHandler.js";
+import { Like, Tweet, User } from "../../models/Index.js";
+import { reportError } from "../../config/emailHandler.js";
 
 export const getAllTweets = async (req, res) => {
     try {

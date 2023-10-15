@@ -6,9 +6,9 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv"
 import cors from "cors"
 
-import { userRouter } from "./routes/userRoutes.js";
-import { authRouter } from "./routes/authRoutes.js";
-import { tweetRouter } from "./routes/tweetRoutes.js";
+import { userRouter } from "./routes/user/userRoutes.js";
+import { authRouter } from "./routes/auth/authRoutes.js";
+import { tweetRouter } from "./routes/tweet/tweetRoutes.js";
 import { reportError } from "./config/emailHandler.js";
 
 dotenv.config();
@@ -36,7 +36,7 @@ app.use((req,res) => {
 });
 app.use(async(err,req,res) => {
     console.log("caught by global error handler!");
-    await reportError("Caught by Global Handler",err);
+    reportError("Caught by Global Handler",err);
     res.status(500).json({error: "Internal Server Error!"});
 })
 app.listen(process.env.PORT || 3000);

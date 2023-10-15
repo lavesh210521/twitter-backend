@@ -1,5 +1,5 @@
-import { reportError } from "../config/emailHandler.js";
-import { Like } from "../models/Index.js";
+import { reportError } from "../../config/emailHandler.js";
+import { Like } from "../../models/Index.js";
 import { Op } from "sequelize";
 
 export const tweetLike = async (req, res) => {

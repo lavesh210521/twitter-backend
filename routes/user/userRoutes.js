@@ -1,13 +1,13 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
-import { validate } from "../exception_handling/errorHandler.js";
-import { userProfileViewValidationRules, userSearchValidationRules, userUpdateValidationRules } from "../middlewares/validatior/user/userValidator.js";
-import { userTweetValidationRules } from "../middlewares/validatior/user/userTweetValidator.js";
-import { getFollowValidationRules, userFollowValidationRules, userRemoveFollowerValidationRules, userUnfollowValidationRules } from "../middlewares/validatior/user/userFollowValidator.js";
-import { paginateValidationRules } from "../middlewares/validatior/common/commonValidatior.js";
-import { getAnyUserProfile, getUser, getUsersBySearch, updateUser, validateUser } from "../services/userService.js";
-import { getAllTweetsFromUser } from "../services/userTweetService.js";
-import { follow, getAuthUserFollowers, getAuthUserFollowings, getUserFollowers, getUserFollowings, getUserWithFollow, removeFollower, unfollow } from "../services/user/userFollowService.js";
+import { validate } from "../../exception_handling/errorHandler.js";
+import { userProfileViewValidationRules, userSearchValidationRules, userUpdateValidationRules } from "../../middlewares/validatior/user/userValidator.js";
+import { userTweetValidationRules } from "../../middlewares/validatior/user/userTweetValidator.js";
+import { getFollowValidationRules, userFollowValidationRules, userRemoveFollowerValidationRules, userUnfollowValidationRules } from "../../middlewares/validatior/user/userFollowValidator.js";
+import { paginateValidationRules } from "../../middlewares/validatior/common/commonValidatior.js";
+import { getAnyUserProfile, getUser, getUsersBySearch, updateUser, validateUser } from "../../services/user/userService.js";
+import { getAllTweetsFromUser } from "../../services/user/userTweetService.js";
+import { follow, getAuthUserFollowers, getAuthUserFollowings, getUserFollowers, getUserFollowings, getUserWithFollow, removeFollower, unfollow } from "../../services/user/userFollowService.js";
 const userRouter = express.Router();
 
 userRouter.get("/auth/profile", auth, getUser);

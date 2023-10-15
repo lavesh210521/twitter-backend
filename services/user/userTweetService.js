@@ -1,4 +1,4 @@
-import { User,Tweet, Like } from "../models/Index.js";
+import { User,Tweet, Like } from "../../models/Index.js";
 //i think this method is not in use will throw this out once we figure out
 export const getAllTweetsFromUser = async(req,res) => {
     try {

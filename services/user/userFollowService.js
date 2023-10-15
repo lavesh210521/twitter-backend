@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
-import { User, Follow, Like, Tweet } from "../models/Index.js";
-import { reportError } from "../config/emailHandler.js";
+import { User, Follow, Like, Tweet } from "../../models/Index.js";
+import { reportError } from "../../config/emailHandler.js";
 
 export const follow = async (req, res) => {
     try {

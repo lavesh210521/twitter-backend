@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Follow, Like, Tweet, User } from "../models/Index.js";
+import { Follow, Like, Tweet, User } from "../../models/Index.js";
 
 export const getAllTweetsFromFollowings = async (req, res) => {
     try {

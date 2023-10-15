@@ -1,10 +1,10 @@
-import { User } from "../models/Index.js";
+import { User } from "../../models/Index.js";
 import bcrypt from "bcrypt";
 import  jwt  from "jsonwebtoken";
-import { isUndefine } from "../helpers.js";
+import { isUndefine } from "../../helpers.js";
 import { Op } from "sequelize";
 import cookieParser from "cookie-parser";
-import { sendEmail } from "../config/emailHandler.js";
+import { sendEmail } from "../../config/emailHandler.js";
 
 
 export const signup = async(req,res) => {
