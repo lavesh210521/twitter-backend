@@ -1,40 +1,43 @@
-import { body, param } from "express-validator";
+import {body } from "express-validator";
 import { Like, Tweet } from "../../models/Index.js";
 import { Op } from "sequelize";
 
 export const tweetLikeValidationRules = [
-    param("tweetId")
+    body("tweetId")
+        .exists()
+        .withMessage("Tweet Id is required!")
+        .notEmpty()
+        .withMessage("Tweet Id cannot be empty!")
         .custom(async (value, { req }) => {
-            if (!req.params.tweetId) {
-                throw new Error("Tweet Id required!");
-            }
             const tweet = await Tweet.findOne({
                 where: {
-                    id: req.params.tweetId
+                    id: req.body.tweetId
                 }
             });
             if (!tweet) {
-                throw new Error("Invalid Tweet Id");
+                throw new Error();
             }
             return true;
         })
+        .withMessage("Invalid Tweet Id!")
 ]
 export const tweetUnlikeValidationRules = [
-    param("tweetId")
+    body("tweetId")
+        .exists()
+        .withMessage("Tweet Id is required!")
+        .notEmpty()
+        .withMessage("Tweet Id cannot be empty!")
         .custom(async (value, { req }) => {
-            if (!req.params.tweetId) {
-                throw new Error("Tweet Id required!");
-            }
-            const tweet = await Like.findOne({
+            const like = await Like.findOne({
                 where: {
                     [Op.and]: [
                         { user_id: req.userId },
-                        { tweet_id: req.params.tweetId }
+                        { tweet_id: req.body.tweetId }
                     ]
                 }
             });
-            if (!tweet) {
-                throw new Error("Cannot unlike!");
+            if (!like) {
+                throw new Error("Like doesn't exist");
             }
             return true;
         })

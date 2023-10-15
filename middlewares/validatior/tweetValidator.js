@@ -1,28 +1,30 @@
-import { body, param } from "express-validator";
+import { body,query } from "express-validator";
 import { Tweet } from "../../models/Index.js";
 
 export const tweetCreateValidationRules = [
 	body("tweet")
 		.exists()
+        .withMessage("tweet is required!")
         .notEmpty()
-        .withMessage("tweet is required!"),
+        .withMessage("tweet cannot be empty"),
 	body("imageUrl")
     	.optional()
         .isURL()
+        .withMessage("ImageUrl should be a url")
 ]
-
 export const tweetDeleteValidationRules = [
-    param("tweetId")
+    query("tweetId")
     .exists()
-    .notEmpty()
     .withMessage("tweet Id is required!")
+    .notEmpty()
+    .withMessage("tweet Id cannot be null")
         .custom(async(value,{req}) => {
-            if(!req.params.tweetId){
-                throw new Error("Tweet Id required!");
+            if(!req.query.tweetId){
+                throw new Error("Tweet Id is required!");
             }
             const tweet = await Tweet.findOne({
                 where: {
-                    id: req.params.tweetId
+                    id: req.query.tweetId
                 }
             });
             if(!tweet){
