@@ -1,14 +1,12 @@
-import { body, param, query } from "express-validator";
+import { body, query } from "express-validator";
 import { Tweet } from "../../models/Index.js";
 
 export const userTweetValidationRules = [
-    param("userId")
+    query("userId")
         .custom((value,{req}) => {
-            console.log(req.params.userId);
-            if(!req.params.userId){
-                const error = new Error("userId required");
-                error.code = 404;
-                throw error;
+            console.log(req.query.userId);
+            if(!req.query.userId){
+                throw new Error("userId required");
             }
             return true;
         })
