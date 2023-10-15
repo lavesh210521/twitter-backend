@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import {validationResult } from "express-validator";
 export const validate = validations => {
   return async (req, res, next) => {
     for (let validation of validations) {

@@ -1,7 +1,6 @@
 import express from "express";
 const app = express();
 
-import { auth } from "./middlewares/auth.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv"
 import cors from "cors"

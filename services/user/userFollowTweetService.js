@@ -58,58 +58,7 @@ export const getAllTweetsFromFollowings = async (req, res) => {
             ]
         });
 
-        // let allTweets = await User.findOne({
-        //     include: [
-        //         {
-        //             model: Follow,
-        //             as: "Following",
-        //             include: [
-        //                 {
-        //                     model: User,
-        //                     as: "Follower",
-        //                     include: [{
-        //                         model: Tweet,
-        //                         attributes: ["tweet", "image_url", "createdAt", "comment_id"],
-        //                         include: [
-        //                             {
-        //                                 model: Like,
-        //                                 attributes: ['id']
-        //                             },
-        //                             {
-        //                                 model: Tweet,
-        //                                 as: "Comment",
-        //                                 attributes: ['id']
-        //                             }
-        //                         ],
-        //                         where: {
-        //                             comment_id: null
-        //                         }
-        //                     }
-        //                     ]
-        //                 },
-        //             ],
-        //         },
-        //     ],
-        //     where: {
-        //         id: req.userId
-        //     }
-        // });
-        // console.log(allTweets);
-        // let tweets = allTweets.Following.map((value) => {
-        //     if(value && value.Follower){
-        //         return (value.Follower.Tweets.map((tweet) => {
-        //             return tweet;
-        //         }));
-        //     }
-        // });
-        // tweets = allTweets.flat();
-        // tweets = tweets.filter((tweet) => {
-        //     if(tweet != null){
-        //         return tweet;
-        //     }
-        // })
-        // console.log(tweets);
-        res.status(200).json({ tweets: tweets,totalTweetCount:totalTweetCount.count});
+        res.status(200).json({ tweets: tweets, totalTweetCount: totalTweetCount.count });
     } catch (error) {
         console.log(error);
         reportError("Critical Error in userFollowTweetService->getAllTweetsFromFollowings()", error);

@@ -1,5 +1,5 @@
 import express from "express";
-import { auth } from "../middlewares/auth.js";
+import { auth } from "../../middlewares/auth/auth.js";
 import { validate } from "../../exception_handling/errorHandler.js";
 import { userProfileViewValidationRules, userSearchValidationRules, userUpdateValidationRules } from "../../middlewares/validatior/user/userValidator.js";
 import { userTweetValidationRules } from "../../middlewares/validatior/user/userTweetValidator.js";

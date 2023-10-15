@@ -1,5 +1,5 @@
 import express from "express";
-import { auth } from "../middlewares/auth.js";
+import { auth } from "../../middlewares/auth/auth.js";
 import { validate } from "../../exception_handling/errorHandler.js";
 import { tweetCreateValidationRules, tweetDeleteValidationRules } from "../../middlewares/validatior/tweet/tweetValidator.js";
 import { userExistValidationRules } from "../../middlewares/validatior/user/userValidator.js";
