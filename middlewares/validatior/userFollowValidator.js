@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body, query } from "express-validator";
 import { Follow, User } from "../../models/Index.js";
 
 export const userFollowValidationRules = [
@@ -6,7 +6,7 @@ export const userFollowValidationRules = [
         .exists()
         .withMessage("User Id is required!")
         .notEmpty()
-        .withMessage("User Id is required!")
+        .withMessage("User Id cannot be empty!")
         .isNumeric()
         .withMessage("User Id should be a number")
         .custom(async (value) => {
@@ -16,19 +16,31 @@ export const userFollowValidationRules = [
                 }
             });
             if (!user) {
-                throw new Error("Invalid User Id");
+                throw new Error();
             }
             return true;
-        }),
+        })
+        .withMessage("Invalid User Id")
+        .custom(async (value, {req}) => {
+            const follow = await Follow.findOne({
+                where: {
+                    from_user_id: req.userId,
+                    to_user_id: value
+                }
+            });
+            if(follow){
+                throw new Error();
+            }
+        })
+        .withMessage("User Already Following"),
 ]
-
 
 export const userRemoveFollowerValidationRules = [
     body("userId")
     .exists()
-    .withMessage("user Id is required!")
+    .withMessage("User Id is required!")
     .notEmpty()
-    .withMessage("user Id cannot be empty")
+    .withMessage("User Id cannot be empty")
     .isNumeric()
     .withMessage("User Id should be a number")
     .escape()
@@ -40,7 +52,7 @@ export const userRemoveFollowerValidationRules = [
             }
         });
         if (!follow) {
-            throw new Error("user is not present in follower list");
+            throw new Error("User is not present in follower list");
         }
         return true;
     }),
@@ -48,8 +60,9 @@ export const userRemoveFollowerValidationRules = [
 export const userUnfollowValidationRules = [
     body("userId")
         .exists()
-        .notEmpty()
         .withMessage("User Id is required!")
+        .notEmpty()
+        .withMessage("User Id cannot be null!")
         .isNumeric()
         .withMessage("User Id should be a number")
         .custom(async (value, { req }) => {
@@ -60,19 +73,21 @@ export const userUnfollowValidationRules = [
                 }
             });
             if (!follow) {
-                throw new Error("Invalid Parameters!");
-            }
-            return true;
-        }),
-]
-
-export const getFollowValidationRules = [
-    param("userId")
-        .custom((value) => {
-            console.log("Called from validation" + value);
-            if (value == undefined) {
-                throw new Error("userId not found!");
+                throw new Error();
             }
             return true;
         })
+        .withMessage("User is not following this user"),
+]
+
+export const getFollowValidationRules = [
+    query("userId")
+        .custom((value) => {
+            console.log("Called from validation" + value);
+            if (value == undefined) {
+                throw new Error();
+            }
+            return true;
+        })
+        .withMessage("User Id not found!")
 ]
