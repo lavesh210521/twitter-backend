@@ -1,6 +1,6 @@
 // validators.js
 import { body, validationResult } from "express-validator";
-import { User } from "../../models/Index.js";
+import { User } from "../../../models/Index.js";
 import { Op } from "sequelize";
 import bcrypt from "bcrypt";
 

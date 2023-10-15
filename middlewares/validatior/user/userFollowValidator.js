@@ -1,5 +1,5 @@
 import { body, query } from "express-validator";
-import { Follow, User } from "../../models/Index.js";
+import { Follow, User } from "../../../models/Index.js";
 
 export const userFollowValidationRules = [
     body("userId")

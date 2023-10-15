@@ -1,5 +1,5 @@
 import { body, query } from "express-validator";
-import { Tweet } from "../../models/Index.js";
+import { Tweet } from "../../../models/Index.js";
 
 export const tweetCommentValidationRules = [
     query("tweetId")

@@ -1,5 +1,5 @@
 import {body } from "express-validator";
-import { Like, Tweet } from "../../models/Index.js";
+import { Like, Tweet } from "../../../models/Index.js";
 import { Op } from "sequelize";
 
 export const tweetLikeValidationRules = [

@@ -1,5 +1,5 @@
 import { body,query } from "express-validator";
-import { User } from "../../models/Index.js";
+import { User } from "../../../models/Index.js";
 
 export const userProfileViewValidationRules = [
 	query('userId')
