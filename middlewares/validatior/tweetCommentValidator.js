@@ -1,21 +1,20 @@
-import { body, param } from "express-validator";
+import { body, query } from "express-validator";
 import { Tweet } from "../../models/Index.js";
 
 export const tweetCommentValidationRules = [
-    param("tweetId")
+    query("tweetId")
         .exists()
-        .notEmpty()
         .withMessage("Tweet Id is required!")
-        .custom(async(value, { req }) => {
+        .notEmpty()
+        .withMessage("Tweet Id cannot be empty")
+        .custom(async (value, { req }) => {
             const tweet = await Tweet.findOne({
                 where: {
-                    id: req.params.tweetId
+                    id: req.query.tweetId
                 }
             });
-            if(!tweet){
-                let error = new Error("Invalid Tweet Id");
-                error.code = 404;
-                throw error;
+            if (!tweet) {
+                throw new Error("Invalid Tweet Id");
             }
             return true;
         })
@@ -23,24 +22,26 @@ export const tweetCommentValidationRules = [
 export const tweetCommentCreateValidationRules = [
     body("tweet")
         .exists()
+        .withMessage("tweet is required!")
         .notEmpty()
-        .withMessage("tweet is required!"),
+        .withMessage("tweet cannot be empty!"),
     body("imageUrl")
         .optional()
         .isURL()
         .withMessage("ImageUrl should be a url"),
     body("commentId")
         .exists()
+        .withMessage("commentId is required!")
         .notEmpty()
-        .withMessage("comment Id is required!")
-        .custom((value, { req }) => {
-            const tweet = Tweet.findOne({
+        .withMessage("comment Id cannot be null")
+        .custom(async (value, { req }) => {
+            const tweet = await Tweet.findOne({
                 where: {
                     id: req.body.commentId
                 }
             });
             if (!tweet) {
-                throw new Error("Invalid Tweet Id");
+                throw new Error("Invalid Comment Id");
             }
             return true;
         })
