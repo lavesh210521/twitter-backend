@@ -80,6 +80,7 @@ export const signinValidationRules = [
         .withMessage("Email cannot be empty"),
     body('password')
         .exists()
+        .withMessage("password is required!")
         .isLength({ min: 8 })
         .withMessage('Password should be minimum 8 characters long')
         .custom(async (value, { req }) => {
