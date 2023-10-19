@@ -6,20 +6,19 @@ import { userExistValidationRules } from "../../middlewares/validatior/user/user
 import { paginateValidationRules } from "../../middlewares/validatior/common/commonValidatior.js";
 import { tweetLikeValidationRules, tweetUnlikeValidationRules } from "../../middlewares/validatior/tweet/tweetLikeValidator.js";
 import { tweetCommentCreateValidationRules, tweetCommentValidationRules } from "../../middlewares/validatior/tweet/tweetCommentValidator.js";
-import { createTweet, deleteTweet, getAllTweetFromUserWithLikeAndComment, getAllTweets } from "../../services/tweet/tweetService.js";
-import { tweetLike, tweetUnlike } from "../../services/tweet/tweetLikeService.js";
-import { createComment, getComments } from "../../services/tweet/tweetCommentService.js";
-import { getAllTweetsFromFollowings } from "../../services/user/userFollowTweetService.js";
-
+import * as tweetController from "../../controllers/tweets/tweetController.js";
+import * as tweetCommentController from "../../controllers/tweets/tweetCommentController.js";
+import * as tweetLikeController from "../../controllers/tweets/tweetLikeController.js";
+import * as userFollowTweetController from "../../controllers/users/userFollowTweetController.js";
 const tweetRouter = express.Router();
 
-tweetRouter.get("", auth, validate(paginateValidationRules), getAllTweets);
-tweetRouter.get("/comments", auth, validate(tweetCommentValidationRules), getComments);
-tweetRouter.put("", auth, validate(tweetCreateValidationRules), createTweet);
-tweetRouter.put("/like", auth, validate(tweetLikeValidationRules), tweetLike);
-tweetRouter.put("/unlike", auth, validate(tweetUnlikeValidationRules), tweetUnlike);
-tweetRouter.put("/comment", auth, validate(tweetCommentCreateValidationRules), createComment);
-tweetRouter.delete("", auth, validate(tweetDeleteValidationRules), deleteTweet);
-tweetRouter.get("/followings", auth, validate(paginateValidationRules), getAllTweetsFromFollowings);
-tweetRouter.get("/users/with-likes-follows", auth, validate(userExistValidationRules), validate(paginateValidationRules), getAllTweetFromUserWithLikeAndComment);
+tweetRouter.get("", auth, validate(paginateValidationRules), tweetController.getAllTweets);
+tweetRouter.get("/comments", auth, validate(tweetCommentValidationRules), tweetCommentController.getComments);
+tweetRouter.put("", auth, validate(tweetCreateValidationRules), tweetController.createTweet);
+tweetRouter.put("/like", auth, validate(tweetLikeValidationRules), tweetLikeController.tweetLike);
+tweetRouter.put("/unlike", auth, validate(tweetUnlikeValidationRules), tweetLikeController.tweetUnlike);
+tweetRouter.put("/comment", auth, validate(tweetCommentCreateValidationRules), tweetCommentController.createComment);
+tweetRouter.delete("", auth, validate(tweetDeleteValidationRules), tweetController.deleteTweet);
+tweetRouter.get("/followings", auth, validate(paginateValidationRules), userFollowTweetController.getAllTweetsFromFollowings);
+tweetRouter.get("/users/with-likes-follows", auth, validate(userExistValidationRules), validate(paginateValidationRules), tweetController.getAllTweetFromUserWithLikeAndComment);
 export { tweetRouter }
