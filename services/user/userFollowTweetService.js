@@ -1,11 +1,11 @@
 import { Op } from "sequelize";
 import { Follow, Like, Tweet, User } from "../../models/Index.js";
 
-export const getAllTweetsFromFollowings = async (req, res) => {
-    try {
+export const getAllTweetsFromFollowings = async (userId,limit,offset) => {
+    
         const followings = await User.findOne({
             where: {
-                id: req.userId
+                id: userId
             },
             include: [
                 {
@@ -40,8 +40,8 @@ export const getAllTweetsFromFollowings = async (req, res) => {
             }
         });
         let tweets = await Tweet.findAll({
-            limit: Number(req.query.limit),
-            offset: Number(req.query.offset),
+            limit: Number(limit),
+            offset: Number(offset),
             where: {
                 [Op.and]: [
                     { user_id: ids },
@@ -50,7 +50,8 @@ export const getAllTweetsFromFollowings = async (req, res) => {
             include: [
                 { model: User },
                 {
-                    model: Tweet, as: "Comment", include: [
+                    model: Tweet, as: "Comment", 
+                    include: [
                         { model: User }
                     ]
                 },
@@ -58,10 +59,5 @@ export const getAllTweetsFromFollowings = async (req, res) => {
             ]
         });
 
-        res.status(200).json({ tweets: tweets, totalTweetCount: totalTweetCount.count });
-    } catch (error) {
-        console.log(error);
-        reportError("Critical Error in userFollowTweetService->getAllTweetsFromFollowings()", error);
-        res.status(500).json({ error: "There is some error while getting Following user!" });
-    }
+        return [tweets, totalTweetCount.count];
 }

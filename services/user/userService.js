@@ -1,79 +1,57 @@
 import { Op } from "sequelize";
 import { Follow, User } from "../../models/Index.js";
-import { reportError } from "../../config/emailHandler.js";
+import { reportError, sendEmail } from "../../config/emailHandler.js";
 
-export const getAnyUserProfile = async (req,res) => {
-    try {
-        const user = await User.findOne({
-            where: {
-                id: req.query.userId
-            },attributes:["id","first_name","last_name","email","username"]
-        });
-        res.status(200).json({user: user});
-    } catch (error) {
-        console.log("Error at getAnyUserProfile-userService " + error);
-        reportError("Critical Error in userService->getAnyUserProfile()",error);
-        res.status(500).json({error: "There is some error while getting user!"});
-    }
-}
-export const getUsersBySearch = async(req,res) => {
-    try {
-        const users = await User.findAll({
-            where:{
-                username: {
-                    [Op.like]: '%'+req.query.searchKeyword+'%'
-                }
-            },attributes:["id","first_name","last_name","email","username"]
-        });
-        res.status(200).json({users: users});
-    } catch (error) {
-        reportError("Critical Error in userService->getUsersBySearch()", error);
-        res.status(500).json({error: "There is some error while fetching users"});
-    }
-}
-export const updateUser = async(req,res) => {
-    try {
-        let userId = req.userId;
-        let user = await User.findOne({
-            where: {
-                id: userId
-            },
-            attributes:["id","first_name","last_name","email","username"]
-        });
-        if(!user){
-            res.status(404).json({error: "User doesn't exist!"});
-        }
-        user.first_name = req.body.first_name;
-        user.last_name = req.body.last_name;
-        user.email = req.body.email;
-        user.username = req.body.username;
-        user.save();
-        res.status(200).json({user: user});
-    } catch (error) {
-        reportError("Critical Error in userService->updateUser()", error);
-        res.status(500).json({error: "Internal Server Error"});
-    }
-}
+// export const getAnyUserProfile = async (req,res) => {
+//     try {
+//         const user = await User.findOne({
+//             where: {
+//                 id: req.query.userId
+//             },attributes:["id","first_name","last_name","email","username"]
+//         });
+//         throw new Error("This error has been thrown manually");
+//         // res.status(200).json({user: user});
+//     } catch (error) {
+//         console.log("---------------------");
+//         console.log(error.stack);
+//         console.log("---------------------");
+//         console.log("Error at getAnyUserProfile-userService ");
+//         res.status(500).json({error: "There is some error while getting user!"});
+//         // await sendEmail("auth@twitter.com", "lavesh@twitter.com", "Logged In", "sending some data!");
+//         console.log(JSON.stringify(error));
+//         await reportError("There is some error",error.stack);
 
-export const getUser = async(req,res) => {
-    console.log(req.query);
-    try {
-        const user = await User.findOne({
-            where: {
-                id: req.userId
-            },attributes:["id","first_name","last_name","email","username"]
-        });
-        return res.status(200).json({
-            user: user
-        })
-        
-    } catch (error) {
-        reportError("Critical Error in userService->getUser()", error);
-        res.status(404).json({error: "User not found!"});        
-    }
-}
-export const validateUser = async(req,res) => {
-    res.status(200).json({
-        status: "verified"
+//     }
+// }
+export const getAnyUserProfile = async (userId) => {
+    const user = await User.findOne({
+        where: {
+            id: userId
+        }, attributes: ["id", "first_name", "last_name", "email", "username"]
     });
+    return user;
+}
+
+export const getUsersBySearch = async (searchKeyword) => {
+    const users = await User.findAll({
+        where: {
+            username: {
+                [Op.like]: '%' + searchKeyword + '%'
+            }
+        }, attributes: ["id", "first_name", "last_name", "email", "username"]
+    });
+    return users;
+}
+export const updateUser = async (user) => {
+    let existingUser = await User.findOne({
+        where: {
+            id: user.id
+        },
+        attributes: ["id", "first_name", "last_name", "email", "username"]
+    });
+    if (!existingUser) {
+        throw new Error("User doesn't exists!");
+    }
+    await user.save();
+    return user;
 }

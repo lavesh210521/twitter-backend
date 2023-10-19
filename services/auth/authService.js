@@ -21,12 +21,14 @@ export const signup = async (req, res) => {
         const jwtToken = jwt.sign({ email: email, id: newUser.id }, process.env.SECRET);
         let expiryDate = new Date();
         expiryDate.setDate(expiryDate + 7);
+        res.clearCookie(`auth`, { path: '/' });
         res.cookie(`auth`, jwtToken, {
             expire: expiryDate,
             secure: true,
             httpOnly: true,
             sameSite: 'None'
         });
+        res.clearCookie(`auth`, { path: '/' });
         return res.status(201).json({ id: newUser.id, token: jwtToken });
     } catch (error) {
         console.log("Generated from AuthController.signUp " + error);
@@ -52,8 +54,9 @@ export const signin = async (req, res) => {
             httpOnly: true,
             sameSite: 'None'
         });
-        sendEmail("auth@twitter.com", user.email, "Logged In", "Your account has been logged in!");
-        return res.status(200).json({ id: user.id, token: jwtToken });
+        res.status(200).json({ id: user.id, token: jwtToken });
+        await sendEmail("auth@twitter.com", user.email, "Logged In", "Your account has been logged in!");
+        
     }
     catch (error) {
         console.log(error);
