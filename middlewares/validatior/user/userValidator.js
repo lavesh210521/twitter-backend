@@ -55,7 +55,6 @@ export const userUpdateValidationRules = [
 					username: req.body.username
 				}
 			});
-			console.log("printing user " + user);
 			if (user && user.id != req.userId && user.username == value) {
 				throw new Error()
 			}
