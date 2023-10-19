@@ -1,4 +1,6 @@
 import {validationResult } from "express-validator";
+import { reportError } from "../config/emailHandler.js";
+
 export const validate = validations => {
   return async (req, res, next) => {
     for (let validation of validations) {
@@ -14,3 +16,8 @@ export const validate = validations => {
     res.status(422).json({ error: errors.array()[0].msg });
   };
 };
+
+export const globalHandler = async(err,req,res,next) => {
+  res.status(500).json({error: "Internal Server Error!"});
+  await reportError("Caught by Global Handler",err.location + "\n" + err.stack);
+}

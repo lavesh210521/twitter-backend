@@ -1,4 +1,5 @@
 import express from "express";
+import { parse } from 'stack-trace';
 const app = express();
 
 import cookieParser from "cookie-parser";
@@ -8,7 +9,7 @@ import cors from "cors"
 import { userRouter } from "./routes/user/userRoutes.js";
 import { authRouter } from "./routes/auth/authRoutes.js";
 import { tweetRouter } from "./routes/tweet/tweetRoutes.js";
-import { reportError } from "./config/emailHandler.js";
+import { globalHandler } from "./exception_handling/errorHandler.js";
 
 dotenv.config();
 process.env.TZ = "Asia/Calcutta";
@@ -33,9 +34,5 @@ app.use("/users",userRouter);
 app.use((req,res) => {
     res.status(400).json({error: "Invalid URL"});
 });
-app.use(async(err,req,res) => {
-    console.log("caught by global error handler!");
-    reportError("Caught by Global Handler",err);
-    res.status(500).json({error: "Internal Server Error!"});
-})
+app.use(globalHandler)
 app.listen(process.env.PORT || 3000);
