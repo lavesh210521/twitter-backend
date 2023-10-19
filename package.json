@@ -29,6 +29,7 @@
     "nodemailer": "^6.9.6",
     "save": "^2.9.0",
     "sequelize": "^6.33.0",
+    "stack-trace": "^1.0.0-pre2",
     "typescript": "^5.2.2"
   }
 }
