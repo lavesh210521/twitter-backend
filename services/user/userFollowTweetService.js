@@ -57,7 +57,6 @@ export const getAllTweetsFromFollowings = async (userId, limit, offset) => {
             },
             {
                 model: Like,
-                attributes: ['id']
             }
         ]
     });
