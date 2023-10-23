@@ -1,5 +1,3 @@
-import { Model, Op } from "sequelize";
-import { Like, Tweet, User } from "../../models/Index.js";
 import { reportError } from "../../config/emailHandler.js";
 import * as tweetService from "../../services/tweet/tweetService.js";
 
@@ -13,7 +11,7 @@ export const getAllTweets = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        reportError("Critical Error in tweetService->getAllTweets()", error);
+        reportError("Critical Error in tweetController->getAllTweets()", error);
         res.status(500).json({ error: "There is some error while fetching tweets" });
     }
 
@@ -24,7 +22,7 @@ export const createTweet = async (req, res) => {
         res.status(200).json({ tweet: tweet });
     } catch (error) {
         console.log(error);
-        await reportError("Critical Error in tweetService->createTweet()", error.stack);
+        await reportError("Critical Error in tweetController->createTweet()", error.stack);
         res.status(500).json({ error: "There is some error while posting tweet" });
     }
 }
@@ -33,7 +31,7 @@ export const getAllTweetFromUserWithLikeAndComment = async (req, res) => {
         const [tweets,totalTweetCount] = await tweetService.getAllTweetFromUserWithLikeAndComment(req.query.userId,req.query.limit,req.query.offset);
         res.status(200).json({ tweets: tweets, totalTweetCount: totalTweetCount });
     } catch (error) {
-        reportError("Critical Error in tweetService->createTweet()", error);
+        reportError("Critical Error in tweetController->createTweet()", error);
         res.status(500).json({ error: "There is some error while fetching tweets" });
     }
 
@@ -43,7 +41,7 @@ export const deleteTweet = async (req, res) => {
         await tweetService.deleteTweet(req.query.tweetId);
         res.status(200).json({ message: "Tweet Deleted Successfully" });
     } catch (error) {
-        reportError("Critical Error in tweetService->deleteTweet()", error);
+        reportError("Critical Error in tweetController->deleteTweet()", error);
         res.status(500).json({ error: "There is some error while deleteing tweet!" });
     }
 }

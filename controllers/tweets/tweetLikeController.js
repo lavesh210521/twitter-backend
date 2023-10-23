@@ -1,6 +1,4 @@
 import { reportError } from "../../config/emailHandler.js";
-import { Like } from "../../models/Index.js";
-import { Op } from "sequelize";
 import * as tweetLikeService from "../../services/tweet/tweetLikeService.js";
 
 export const tweetLike = async (req, res) => {
@@ -11,7 +9,7 @@ export const tweetLike = async (req, res) => {
         });
     } catch (error) {
         console.log("tweetLikeService -> tweetLike" + error);
-        reportError("Critical Error in tweetLikeService->tweetLike()",error);
+        reportError("Critical Error in tweetLikeController->tweetLike()",error);
         res.status(500).json({ error: "There is some issue while performing like operation!" });
     }
 }
@@ -21,7 +19,7 @@ export const tweetUnlike = async (req, res) => {
         res.status(200).json({message: "Unliked Successfully!" });
     } catch (error) {
         console.log("tweetLikeService -> tweetUnlike " + error);
-        reportError("Critical Error in tweetLikeService->tweetUnlike()",error);
+        reportError("Critical Error in tweetLikeController->tweetUnlike()",error);
         res.status(500).json({ error: "There is some issue while performing unlike operation!" });
     }
 
