@@ -1,5 +1,3 @@
-import { Op } from "sequelize";
-import { Follow, User } from "../../models/Index.js";
 import { reportError, sendEmail } from "../../config/emailHandler.js";
 import * as userService from "../../services/user/userService.js"
 
@@ -9,7 +7,9 @@ export const getAnyUserProfile = async (req, res, next) => {
         res.status(200).json({ user: user });
     } catch (error) {
         // error.location = "userService->getAnyUserProfile()";
-        next(error);
+        // next(error);
+        reportError("Critical Error in userController->getAnyUserProfile()", error);
+        res.status(500).json({error: "There is some error while fetching profile!"});
     }
 }
 export const getUsersBySearch = async (req, res) => {
@@ -18,8 +18,8 @@ export const getUsersBySearch = async (req, res) => {
         const users = await userService.getUsersBySearch(req.query.searchKeyword);
         res.status(200).json({ users: users });
     } catch (error) {
-        reportError("Critical Error in userService->getUsersBySearch()", error);
-        res.status(500).json({ error: "There is some error while fetching users" });
+        reportError("Critical Error in userController->getUsersBySearch()", error);
+        res.status(500).json({ error: "There is some error while fetching users!" });
     }
 }
 export const updateUser = async (req, res) => {
@@ -33,7 +33,7 @@ export const updateUser = async (req, res) => {
         user = await userService.updateUser(user);
         res.status(200).json({ user: user });
     } catch (error) {
-        reportError("Critical Error in userService->updateUser()", error);
+        reportError("Critical Error in userController->updateUser()", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -45,12 +45,12 @@ export const getUser = async (req, res) => {
             user: user
         });
     } catch (error) {
-        reportError("Critical Error in userService->getUser()", error);
+        reportError("Critical Error in userController->getUser()", error);
         res.status(404).json({ error: "User not found!" });
     }
 }
 export const validateUser = async (req, res) => {
     res.status(200).json({
         status: "verified"
-    }); 
+    });
 }
