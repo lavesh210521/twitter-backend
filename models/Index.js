@@ -4,15 +4,27 @@ import { Like } from "./Like.js";
 import { Follow } from "./Follow.js";
 
 User.hasMany(Tweet, {
-    foreignKey: "user_id"
+    foreignKey: "user_id",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
 });
 User.hasMany(Follow, {
     foreignKey: "to_user_id",
-    as: "Follower"
+    as: "Follower",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
 });
 User.hasMany(Follow, {
     foreignKey: "from_user_id",
-    as: "Following"
+    as: "Following",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+});
+User.hasMany(Like,{
+    foreignKey: "user_id",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+
 });
 Tweet.belongsTo(User, {
     foreignKey: "user_id",
