@@ -19,5 +19,5 @@ export const validate = validations => {
 
 export const globalHandler = async(err,req,res,next) => {
   res.status(500).json({error: "Internal Server Error!"});
-  await reportError("Caught by Global Handler",err.location + "\n" + err.stack);
+  await reportError("Caught by Global Handler",err.location + "\n" + err.stack + "\n" + Date.now());
 }
