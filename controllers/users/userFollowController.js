@@ -1,5 +1,3 @@
-import { Op } from "sequelize";
-import { User, Follow, Like, Tweet } from "../../models/Index.js";
 import { reportError } from "../../config/emailHandler.js";
 import * as userFollowService from "../../services/user/userFollowService.js";
 
@@ -9,7 +7,7 @@ export const follow = async (req, res) => {
         res.status(200).json({ message: "Follow Successful" });
 
     } catch (error) {
-        reportError("Critical Error in userFollowService->follow()", error);
+        reportError("Critical Error in userFollowController->follow()", error);
         res.status(500).json({ error: "There is some error while following user" });
     }
 }
@@ -19,7 +17,7 @@ export const unfollow = async (req, res) => {
         await userFollowService.unfollow(req.userId,req.body.userId);
         res.status(200).json({ message: "Unfollow Successful" });
     } catch (error) {
-        reportError("Critical Error in tweetService->deleteTweet()", error);
+        reportError("Critical Error in tweetController->deleteTweet()", error);
         res.status(500).json({ error: "There is some error while unfollowing user" });
 
     }
@@ -31,7 +29,7 @@ export const getAuthUserFollowings = async (req, res) => {
         res.status(200).json({ users: users, totalFollowingCount: totalFollowingCount })
     } catch (error) {
         console.log(error);
-        reportError("Critical Error in userFollowService->follow()", error);
+        reportError("Critical Error in userFollowController->follow()", error);
         res.status(500).json({ error: "There is some error while getting Following user!" });
     }
 }
@@ -41,7 +39,7 @@ export const getAuthUserFollowers = async (req, res) => {
         res.status(200).json({ users: users, totalFollowerCount: totalFollowerCount })
     } catch (error) {
         console.log(error);
-        reportError("Critical Error in userFollowService->getAuthUserFollowers()", error);
+        reportError("Critical Error in userFollowController->getAuthUserFollowers()", error);
         res.status(500).json({ error: "There is some error while getting Follower user!" });
     }
 }
@@ -51,7 +49,7 @@ export const getUserFollowings = async (req, res) => {
         res.status(200).json({ users: users, totalFollowingCount: totalFollowingCount })
     } catch (error) {
         console.log(error);
-        reportError("Critical Error in userFollowService->follow()", error);
+        reportError("Critical Error in userFollowController->follow()", error);
         res.status(500).json({ error: "There is some error while getting Following user!" });
     }
 }
@@ -61,7 +59,7 @@ export const getUserFollowers = async (req, res) => {
          res.status(200).json({ users: users, totalFollowerCount: totalFollowerCount })
      } catch (error) {
          console.log(error);
-         reportError("Critical Error in userFollowService->getAuthUserFollowers()", error);
+         reportError("Critical Error in userFollowController->getAuthUserFollowers()", error);
          res.status(500).json({ error: "There is some error while getting Follower user!" });
      } 
 }
@@ -71,7 +69,7 @@ export const getUserWithFollow = async (req, res) => {
         res.status(200).json({ user: users, followers: followers, followings: followings });
     } catch (error) {
         console.log(error);
-        reportError("Critical Error in userFollowService->getUserWithFollow()", error);
+        reportError("Critical Error in userFollowController->getUserWithFollow()", error);
         res.status(500).json({ error: "There is some error while fetching user and follow" })
     }
 }
@@ -81,7 +79,7 @@ export const removeFollower = async (req, res) => {
         res.status(200).json({ message: "Unfollow Successful" });
 
     } catch (error) {
-        reportError("Critical Error in userFollowService->removeFollower()", error);
+        reportError("Critical Error in userFollowController->removeFollower()", error);
         res.status(500).json({ message: "There is some error while unfollowing user" });
     }
 }
