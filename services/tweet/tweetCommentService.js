@@ -1,14 +1,18 @@
-import { Tweet } from "../../models/Index.js";
-import { reportError } from "../../config/emailHandler.js";
+import { Tweet, User } from "../../models/Index.js";
 
 export const getComments = async (tweetId) => {
-    const tweet = await Tweet.findOne({
-        include: "Comment",
+    const comments = await Tweet.findAll({
         where: {
-            id: tweetId
-        }
+            comment_id: tweetId
+        },
+        include:[
+            {
+                model : User,
+                attributes: ["id","first_name","last_name","username","email"]
+            }
+        ]
     });
-    return tweet.Comment;
+    return comments;
 }
 
 export const createComment = async (userId, tweetMsg, commentId) => {
