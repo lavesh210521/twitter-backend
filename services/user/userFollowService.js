@@ -21,7 +21,7 @@ export const unfollow = async (from_user_id, to_user_id) => {
 }
 
 export const getUserFollowings = async (userId, limit, offset) => {
-    const totalFollowingCount = await User.findAndCountAll({
+    const totalFollowingCount = await User.count({
         where: {
             id: userId
         },
@@ -62,7 +62,7 @@ export const getUserFollowings = async (userId, limit, offset) => {
     return [users, totalFollowingCount];
 }
 export const getUserFollowers = async (userId, limit, offset) => {
-    const totalFollowerCount = await User.findAndCountAll({
+    const totalFollowerCount = await User.count({
         where: {
             id: userId
         },
