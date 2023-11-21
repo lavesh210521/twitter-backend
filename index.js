@@ -15,7 +15,7 @@ dotenv.config();
 process.env.TZ = "Asia/Calcutta";
 //Before Middlewares
 const options = {
-    "origin": ['http://localhost:4200','https://65326d9c6df1900ca7f94250--unique-youtiao-b54161.netlify.app/'], // or use an array of allowed origins
+    "origin": ['http://localhost:4200'], // or use an array of allowed origins
     "methods": 'GET,HEAD,PUT,PATCH,POST,DELETE',
     "credentials": true, 
     "optionsSuccessStatus": 204
